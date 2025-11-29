@@ -52,10 +52,11 @@ export async function POST(request: NextRequest) {
       { success: false, message: 'Invalid credentials' },
       { status: 401 }
     );
-  } catch (error) {
-    return NextResponse.json(
-      { success: false, message: 'Server error' },
-      { status: 500 }
-    );
-  }
+} catch (error) {
+  console.error('Login error:', error);
+  return NextResponse.json(
+    { success: false, message: 'Server error' },
+    { status: 500 }
+  );
+}
 }

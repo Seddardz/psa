@@ -26,7 +26,6 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import {
   BarChart3,
   TrendingUp,
-  Users,
   Activity,
   LogOut,
   Settings,
@@ -39,19 +38,51 @@ import {
   FolderKanban,
   Target,
   Calendar,
+  LucideIcon,
 } from "lucide-react";
+
+// Types pour les données utilisateur
+interface RecentActivity {
+  title: string;
+  time: string;
+  type: "success" | "info" | "warning";
+}
+
+interface UserStats {
+  projects: number;
+  tasks: number;
+  completed: number;
+  inProgress: number;
+}
+
+interface UserData {
+  name: string;
+  role: string;
+  stats: UserStats;
+  recentActivity: RecentActivity[];
+}
+
+interface UserDataMap {
+  [key: string]: UserData;
+}
+
+interface NavItem {
+  icon: LucideIcon;
+  label: string;
+  active?: boolean;
+}
 
 export default function UserDashboard() {
   const router = useRouter();
   const params = useParams();
   const username = params.username as string;
-  const [userData, setUserData] = useState<any>(null);
+  const [userData, setUserData] = useState<UserData | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
-    const userDataMap: any = {
+    const userDataMap: UserDataMap = {
       user1: {
-        name: "Marie Dubois",
+        name: "Acceuil",
         role: "Chef de Projet",
         stats: {
           projects: 12,
@@ -70,7 +101,7 @@ export default function UserDashboard() {
         ],
       },
       user2: {
-        name: "Thomas Martin",
+        name: "Doctor",
         role: "Développeur Senior",
         stats: {
           projects: 8,
@@ -85,7 +116,7 @@ export default function UserDashboard() {
         ],
       },
       user3: {
-        name: "Sophie Laurent",
+        name: "Cnas",
         role: "Designer UX/UI",
         stats: {
           projects: 15,
@@ -100,7 +131,7 @@ export default function UserDashboard() {
         ],
       },
       user4: {
-        name: "Lucas Bernard",
+        name: "Labo",
         role: "Analyste Business",
         stats: {
           projects: 20,
@@ -119,7 +150,7 @@ export default function UserDashboard() {
         ],
       },
       user5: {
-        name: "Emma Petit",
+        name: "Assoc",
         role: "Marketing Manager",
         stats: {
           projects: 10,
@@ -155,59 +186,66 @@ export default function UserDashboard() {
     );
   }
 
-  const SidebarContent = () => (
-    <div className="flex flex-col h-full">
-      <div className="p-6">
-        <div className="flex items-center gap-2">
-          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-blue-600 to-violet-600">
-            <Sparkles className="h-6 w-6 text-white" />
+  const SidebarContent = () => {
+    const navItems: NavItem[] = [
+      { icon: BarChart3, label: "Tableau de bord", active: true },
+      { icon: FolderKanban, label: "Projets" },
+      { icon: Target, label: "Objectifs" },
+      { icon: Calendar, label: "Calendrier" },
+      { icon: Settings, label: "Paramètres" },
+    ];
+
+    return (
+      <div className="flex flex-col h-full">
+        <div className="p-6">
+          <div className="flex items-center gap-2">
+            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-blue-600 to-violet-600">
+              <Sparkles className="h-6 w-6 text-white" />
+            </div>
+            <span className="text-xl font-bold">DashHub</span>
           </div>
-          <span className="text-xl font-bold">DashHub</span>
+        </div>
+
+        <Separator />
+
+        <nav className="flex-1 p-4 space-y-2">
+          {navItems.map((item, i) => (
+            <button
+              key={i}
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors ${
+                item.active
+                  ? "bg-blue-50 text-blue-700 dark:bg-blue-950 dark:text-blue-300"
+                  : "text-slate-600 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800"
+              }`}
+            >
+              <item.icon className="h-5 w-5" />
+              {item.label}
+            </button>
+          ))}
+        </nav>
+
+        <Separator />
+
+        <div className="p-4">
+          <Card className="bg-gradient-to-br from-blue-50 to-violet-50 dark:from-blue-950 dark:to-violet-950 border-blue-200 dark:border-blue-800">
+            <CardContent className="p-4">
+              <p className="text-sm font-medium mb-2">🎉 Nouveau !</p>
+              <p className="text-xs text-slate-600 dark:text-slate-400 mb-3">
+                Découvrez nos nouvelles fonctionnalités d&apos;analyse
+              </p>
+              <Button
+                size="sm"
+                variant="outline"
+                className="w-full h-8 text-xs"
+              >
+                En savoir plus
+              </Button>
+            </CardContent>
+          </Card>
         </div>
       </div>
-
-      <Separator />
-
-      <nav className="flex-1 p-4 space-y-2">
-        {[
-          { icon: BarChart3, label: "Tableau de bord", active: true },
-          { icon: FolderKanban, label: "Projets" },
-          { icon: Target, label: "Objectifs" },
-          { icon: Calendar, label: "Calendrier" },
-          { icon: Users, label: "Équipe" },
-          { icon: Settings, label: "Paramètres" },
-        ].map((item, i) => (
-          <button
-            key={i}
-            className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors ${
-              item.active
-                ? "bg-blue-50 text-blue-700 dark:bg-blue-950 dark:text-blue-300"
-                : "text-slate-600 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800"
-            }`}
-          >
-            <item.icon className="h-5 w-5" />
-            {item.label}
-          </button>
-        ))}
-      </nav>
-
-      <Separator />
-
-      <div className="p-4">
-        <Card className="bg-gradient-to-br from-blue-50 to-violet-50 dark:from-blue-950 dark:to-violet-950 border-blue-200 dark:border-blue-800">
-          <CardContent className="p-4">
-            <p className="text-sm font-medium mb-2">🎉 Nouveau !</p>
-            <p className="text-xs text-slate-600 dark:text-slate-400 mb-3">
-              Découvrez nos nouvelles fonctionnalités d'analyse
-            </p>
-            <Button size="sm" variant="outline" className="w-full h-8 text-xs">
-              En savoir plus
-            </Button>
-          </CardContent>
-        </Card>
-      </div>
-    </div>
-  );
+    );
+  };
 
   const completionRate = Math.round(
     (userData.stats.completed / userData.stats.tasks) * 100
@@ -439,35 +477,37 @@ export default function UserDashboard() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {userData.recentActivity.map((activity: any, i: number) => (
-                    <div key={i} className="flex gap-3">
-                      <div
-                        className={`flex-shrink-0 h-8 w-8 rounded-full flex items-center justify-center ${
-                          activity.type === "success"
-                            ? "bg-green-100 dark:bg-green-950"
-                            : activity.type === "warning"
-                            ? "bg-orange-100 dark:bg-orange-950"
-                            : "bg-blue-100 dark:bg-blue-950"
-                        }`}
-                      >
-                        {activity.type === "success" ? (
-                          <CheckCircle2 className="h-4 w-4 text-green-600" />
-                        ) : activity.type === "warning" ? (
-                          <AlertCircle className="h-4 w-4 text-orange-600" />
-                        ) : (
-                          <Activity className="h-4 w-4 text-blue-600" />
-                        )}
+                  {userData.recentActivity.map(
+                    (activity: RecentActivity, i: number) => (
+                      <div key={i} className="flex gap-3">
+                        <div
+                          className={`flex-shrink-0 h-8 w-8 rounded-full flex items-center justify-center ${
+                            activity.type === "success"
+                              ? "bg-green-100 dark:bg-green-950"
+                              : activity.type === "warning"
+                              ? "bg-orange-100 dark:bg-orange-950"
+                              : "bg-blue-100 dark:bg-blue-950"
+                          }`}
+                        >
+                          {activity.type === "success" ? (
+                            <CheckCircle2 className="h-4 w-4 text-green-600" />
+                          ) : activity.type === "warning" ? (
+                            <AlertCircle className="h-4 w-4 text-orange-600" />
+                          ) : (
+                            <Activity className="h-4 w-4 text-blue-600" />
+                          )}
+                        </div>
+                        <div className="flex-1 space-y-1">
+                          <p className="text-sm font-medium leading-none">
+                            {activity.title}
+                          </p>
+                          <p className="text-xs text-slate-500">
+                            {activity.time}
+                          </p>
+                        </div>
                       </div>
-                      <div className="flex-1 space-y-1">
-                        <p className="text-sm font-medium leading-none">
-                          {activity.title}
-                        </p>
-                        <p className="text-xs text-slate-500">
-                          {activity.time}
-                        </p>
-                      </div>
-                    </div>
-                  ))}
+                    )
+                  )}
                 </div>
               </CardContent>
             </Card>

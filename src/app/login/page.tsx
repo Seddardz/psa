@@ -46,7 +46,8 @@ export default function LoginPage() {
       } else {
         setError(data.message);
       }
-    } catch (err) {
+    } catch {
+      // Pas besoin de capturer l'erreur si on ne l'utilise pas
       setError("Une erreur est survenue. Veuillez réessayer.");
     } finally {
       setLoading(false);
@@ -71,7 +72,7 @@ export default function LoginPage() {
         <div className="relative z-10">
           <Link href="/" className="inline-flex items-center gap-2 mb-8 group">
             <ArrowLeft className="h-5 w-5 group-hover:-translate-x-1 transition-transform" />
-            <span className="text-sm font-medium">Retour à l'accueil</span>
+            <span className="text-sm font-medium">Retour à l&apos;accueil</span>
           </Link>
 
           <div className="flex items-center gap-3 mb-6">
@@ -141,7 +142,7 @@ export default function LoginPage() {
               <form onSubmit={handleSubmit} className="space-y-5">
                 <div className="space-y-2">
                   <Label htmlFor="username" className="text-sm font-medium">
-                    Nom d'utilisateur
+                    Nom d&apos;utilisateur
                   </Label>
                   <Input
                     id="username"
@@ -205,8 +206,47 @@ export default function LoginPage() {
                   )}
                 </Button>
               </form>
+
+              <Separator className="my-6" />
+
+              {/* Section des boutons de démo */}
+              <div className="space-y-3">
+                <p className="text-sm font-medium text-slate-600 dark:text-slate-400 text-center mb-3">
+                  Comptes de démonstration
+                </p>
+
+                <div className="grid grid-cols-2 gap-2">
+                  {[1, 2, 3, 4, 5].map((num) => (
+                    <Button
+                      key={num}
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={() => quickLogin(`user${num}`, "1234")}
+                      disabled={loading}
+                      className="h-9 text-xs font-medium hover:bg-slate-100 dark:hover:bg-slate-800"
+                    >
+                      User{num}
+                    </Button>
+                  ))}
+                </div>
+
+                <p className="text-xs text-slate-500 dark:text-slate-400 text-center mt-3">
+                  Cliquez sur un utilisateur pour remplir automatiquement
+                </p>
+              </div>
             </CardContent>
           </Card>
+
+          <p className="mt-6 text-center text-sm text-slate-600 dark:text-slate-400">
+            Pas encore de compte ?{" "}
+            <a
+              href="#"
+              className="font-medium text-blue-600 hover:text-blue-500 dark:text-blue-400"
+            >
+              Créer un compte
+            </a>
+          </p>
         </div>
       </div>
     </div>
