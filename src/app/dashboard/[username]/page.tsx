@@ -214,18 +214,14 @@ export default function UserDashboard() {
         <Separator />
 
         <div className="p-4">
-          <Card className="bg-gradient-to-br from-blue-50 to-violet-50 dark:from-blue-950 dark:to-violet-950 border-blue-200 dark:border-blue-800">
+          <Card className="bg-gradient-to-br from-red-50 to-red-50 dark:from-blue-950 dark:to-violet-950 border-blue-200 dark:border-blue-800">
             <CardContent className="p-4">
-              <p className="text-sm font-medium mb-2">🎉 Nouveau !</p>
-              <p className="text-xs text-slate-600 dark:text-slate-400 mb-3">
-                Découvrez nos nouvelles fonctionnalités d&apos;analyse
-              </p>
               <Button
                 size="sm"
                 variant="outline"
                 className="w-full h-8 text-xs"
               >
-                En savoir plus
+                Déconnexion
               </Button>
             </CardContent>
           </Card>
