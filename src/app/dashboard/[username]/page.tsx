@@ -4,7 +4,6 @@
 import { useRouter, useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import {
@@ -210,22 +209,7 @@ export default function UserDashboard() {
             </button>
           ))}
         </nav>
-
         <Separator />
-
-        <div className="p-4">
-          <Card className="bg-gradient-to-br from-red-50 to-red-50 dark:from-blue-950 dark:to-violet-950 border-blue-200 dark:border-blue-800">
-            <CardContent className="p-4">
-              <Button
-                size="sm"
-                variant="outline"
-                className="w-full h-8 text-xs"
-              >
-                Déconnexion
-              </Button>
-            </CardContent>
-          </Card>
-        </div>
       </div>
     );
   };
