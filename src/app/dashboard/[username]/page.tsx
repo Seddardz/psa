@@ -4,15 +4,8 @@
 import { useRouter, useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import {
   DropdownMenu,
@@ -25,16 +18,10 @@ import {
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import {
   BarChart3,
-  TrendingUp,
-  Activity,
   LogOut,
   Settings,
-  Bell,
   Menu,
   Sparkles,
-  CheckCircle2,
-  Clock,
-  AlertCircle,
   FolderKanban,
   Target,
   Calendar,
@@ -246,11 +233,6 @@ export default function UserDashboard() {
       </div>
     );
   };
-
-  const completionRate = Math.round(
-    (userData.stats.completed / userData.stats.tasks) * 100
-  );
-
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950">
       {/* Desktop Sidebar */}
@@ -289,11 +271,6 @@ export default function UserDashboard() {
             </div>
 
             <div className="flex items-center gap-3">
-              <Button variant="ghost" size="icon" className="relative">
-                <Bell className="h-5 w-5" />
-                <span className="absolute top-1.5 right-1.5 h-2 w-2 rounded-full bg-red-600"></span>
-              </Button>
-
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" className="gap-2 px-2 sm:px-3">
@@ -336,183 +313,7 @@ export default function UserDashboard() {
         </header>
 
         {/* Page Content */}
-        <main className="p-4 sm:p-6 lg:p-8">
-          {/* Welcome Section */}
-          <div className="mb-8">
-            <h2 className="text-2xl sm:text-3xl font-bold mb-2">
-              Bonjour, {userData.name.split(" ")[0]} 👋
-            </h2>
-            <p className="text-slate-600 dark:text-slate-400">
-              {userData.role} • Voici un aperçu de votre activité
-            </p>
-          </div>
-
-          {/* Stats Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-8">
-            {[
-              {
-                title: "Projets actifs",
-                value: userData.stats.projects,
-                icon: FolderKanban,
-                color: "from-blue-500 to-cyan-500",
-                trend: "+12%",
-              },
-              {
-                title: "Total des tâches",
-                value: userData.stats.tasks,
-                icon: Activity,
-                color: "from-violet-500 to-purple-500",
-                trend: "+8%",
-              },
-              {
-                title: "Tâches terminées",
-                value: userData.stats.completed,
-                icon: CheckCircle2,
-                color: "from-green-500 to-emerald-500",
-                trend: "+15%",
-              },
-              {
-                title: "En cours",
-                value: userData.stats.inProgress,
-                icon: Clock,
-                color: "from-orange-500 to-red-500",
-                trend: "-3%",
-              },
-            ].map((stat, i) => (
-              <Card
-                key={i}
-                className="relative overflow-hidden group hover:shadow-lg transition-all"
-              >
-                <CardHeader className="pb-3">
-                  <div className="flex items-center justify-between">
-                    <CardTitle className="text-sm font-medium text-slate-600 dark:text-slate-400">
-                      {stat.title}
-                    </CardTitle>
-                    <div
-                      className={`h-10 w-10 rounded-lg bg-gradient-to-br ${stat.color} flex items-center justify-center group-hover:scale-110 transition-transform`}
-                    >
-                      <stat.icon className="h-5 w-5 text-white" />
-                    </div>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <div className="flex items-baseline justify-between">
-                    <p className="text-3xl font-bold">{stat.value}</p>
-                    <Badge variant="secondary" className="text-xs">
-                      {stat.trend}
-                    </Badge>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-
-          <div className="grid lg:grid-cols-3 gap-6">
-            {/* Progress Card */}
-            <Card className="lg:col-span-2">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <TrendingUp className="h-5 w-5 text-blue-600" />
-                  Performance
-                </CardTitle>
-                <CardDescription>Votre progression ce mois-ci</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-6">
-                  <div>
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-sm font-medium">
-                        Taux de complétion
-                      </span>
-                      <span className="text-2xl font-bold text-blue-600">
-                        {completionRate}%
-                      </span>
-                    </div>
-                    <div className="h-3 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden">
-                      <div
-                        className="h-full bg-gradient-to-r from-blue-600 to-violet-600 rounded-full transition-all duration-500"
-                        style={{ width: `${completionRate}%` }}
-                      />
-                    </div>
-                  </div>
-
-                  <Separator />
-
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="p-4 bg-green-50 dark:bg-green-950 rounded-lg">
-                      <div className="flex items-center gap-2 mb-1">
-                        <CheckCircle2 className="h-4 w-4 text-green-600" />
-                        <span className="text-xs font-medium text-green-900 dark:text-green-100">
-                          Terminées
-                        </span>
-                      </div>
-                      <p className="text-2xl font-bold text-green-700 dark:text-green-300">
-                        {userData.stats.completed}
-                      </p>
-                    </div>
-
-                    <div className="p-4 bg-orange-50 dark:bg-orange-950 rounded-lg">
-                      <div className="flex items-center gap-2 mb-1">
-                        <Clock className="h-4 w-4 text-orange-600" />
-                        <span className="text-xs font-medium text-orange-900 dark:text-orange-100">
-                          En cours
-                        </span>
-                      </div>
-                      <p className="text-2xl font-bold text-orange-700 dark:text-orange-300">
-                        {userData.stats.inProgress}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Recent Activity */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Activity className="h-5 w-5 text-violet-600" />
-                  Activité récente
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {userData.recentActivity.map(
-                    (activity: RecentActivity, i: number) => (
-                      <div key={i} className="flex gap-3">
-                        <div
-                          className={`flex-shrink-0 h-8 w-8 rounded-full flex items-center justify-center ${
-                            activity.type === "success"
-                              ? "bg-green-100 dark:bg-green-950"
-                              : activity.type === "warning"
-                              ? "bg-orange-100 dark:bg-orange-950"
-                              : "bg-blue-100 dark:bg-blue-950"
-                          }`}
-                        >
-                          {activity.type === "success" ? (
-                            <CheckCircle2 className="h-4 w-4 text-green-600" />
-                          ) : activity.type === "warning" ? (
-                            <AlertCircle className="h-4 w-4 text-orange-600" />
-                          ) : (
-                            <Activity className="h-4 w-4 text-blue-600" />
-                          )}
-                        </div>
-                        <div className="flex-1 space-y-1">
-                          <p className="text-sm font-medium leading-none">
-                            {activity.title}
-                          </p>
-                          <p className="text-xs text-slate-500">
-                            {activity.time}
-                          </p>
-                        </div>
-                      </div>
-                    )
-                  )}
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        </main>
+        <main className="p-4 sm:p-6 lg:p-8"></main>
       </div>
     </div>
   );
